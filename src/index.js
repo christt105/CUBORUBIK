@@ -1,7 +1,6 @@
-import './styles.css'
-import { OrbitControls } from './src/OrbitControls1.js'
+import { OrbitControls } from './OrbitControls1.js'
 
-import { gsap } from 'gsap'
+import { gsap } from '../node_modules/gsap/gsap-core.js'
 
 // import * as dat from 'dat.gui'
 

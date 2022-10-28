@@ -1,14 +1,20 @@
-import { OrbitControls } from './OrbitControls1.js'
+import {
+  OrbitControls
+} from './OrbitControls1.js'
 
-import { gsap } from '../node_modules/gsap/gsap-core.js'
+import {
+  gsap
+} from '../node_modules/gsap/gsap-core.js'
 
 // import * as dat from 'dat.gui'
 
 import vertexShader from './shaders/vertex.glsl'
 import fragmentShader from './shaders/fragment.glsl'
 
-let scene, rollObject, group;//, controls;
-let canvas = [], cameras = [], renderers = []
+let scene, rollObject, group; //, controls;
+let canvas = [],
+  cameras = [],
+  renderers = []
 
 let intersectsPrev = null;
 let intersects = null;
@@ -22,15 +28,110 @@ let pPointIntersect = new THREE.Vector3();
 let pNormalIntersect = new THREE.Vector3();
 const normalMatrix = new THREE.Matrix3();
 
-const config = [
-  { axis: "x", dir: 1, color: "red", name: 'right', pos: { x: 5, y: 0, z: 0 }, rotZ: -Math.PI / 2, cam: "Orthographic" },
-  { axis: "x", dir: -1, color: "orange", name: 'left', pos: { x: -5, y: 0, z: 0 }, rotZ: Math.PI / 2, cam: "Orthographic" },
-  { axis: "y", dir: 1, color: "yellow", name: 'top', pos: { x: 0, y: 5, z: 0 }, rotZ: 0, cam: "Orthographic" },
-  { axis: "y", dir: -1, color: "white", name: 'bottom', pos: { x: 0, y: -5, z: 0 }, rotZ: Math.PI, cam: "Orthographic" },
-  { axis: "z", dir: 1, color: "blue", name: 'front', pos: { x: 0, y: 0, z: 5 }, rotZ: 0, cam: "Orthographic" },
-  { axis: "z", dir: -1, color: "green", name: 'back', pos: { x: 0, y: 0, z: -5 }, rotZ: Math.PI, cam: "Orthographic" },
-  { axis: "", dir: 0, color: "", name: 'all', pos: { x: 4, y: 4, z: 4 }, rotZ: 0, cam: "Perspective" },
-  { axis: "", dir: 0, color: "", name: 'orbit', pos: { x: 6, y: 6, z: 6 }, rotZ: 0, cam: "Perspective" }
+const config = [{
+    axis: "x",
+    dir: 1,
+    color: "red",
+    name: 'right',
+    pos: {
+      x: 5,
+      y: 0,
+      z: 0
+    },
+    rotZ: -Math.PI / 2,
+    cam: "Orthographic"
+  },
+  {
+    axis: "x",
+    dir: -1,
+    color: "orange",
+    name: 'left',
+    pos: {
+      x: -5,
+      y: 0,
+      z: 0
+    },
+    rotZ: Math.PI / 2,
+    cam: "Orthographic"
+  },
+  {
+    axis: "y",
+    dir: 1,
+    color: "yellow",
+    name: 'top',
+    pos: {
+      x: 0,
+      y: 5,
+      z: 0
+    },
+    rotZ: 0,
+    cam: "Orthographic"
+  },
+  {
+    axis: "y",
+    dir: -1,
+    color: "white",
+    name: 'bottom',
+    pos: {
+      x: 0,
+      y: -5,
+      z: 0
+    },
+    rotZ: Math.PI,
+    cam: "Orthographic"
+  },
+  {
+    axis: "z",
+    dir: 1,
+    color: "blue",
+    name: 'front',
+    pos: {
+      x: 0,
+      y: 0,
+      z: 5
+    },
+    rotZ: 0,
+    cam: "Orthographic"
+  },
+  {
+    axis: "z",
+    dir: -1,
+    color: "green",
+    name: 'back',
+    pos: {
+      x: 0,
+      y: 0,
+      z: -5
+    },
+    rotZ: Math.PI,
+    cam: "Orthographic"
+  },
+  {
+    axis: "",
+    dir: 0,
+    color: "",
+    name: 'all',
+    pos: {
+      x: 4,
+      y: 4,
+      z: 4
+    },
+    rotZ: 0,
+    cam: "Perspective"
+  },
+  {
+    axis: "",
+    dir: 0,
+    color: "",
+    name: 'orbit',
+    pos: {
+      x: 6,
+      y: 6,
+      z: 6
+    },
+    rotZ: 0,
+    cam: "Perspective"
+  }
 ];
 
 let cubes = [];
@@ -39,13 +140,17 @@ const dir = new THREE.Vector3(1, 2, 0).normalize();
 const origin = new THREE.Vector3(0, 0, 0);
 const length = 1;
 const hex = 0xffffff;
-const arrowHelper = new THREE.ArrowHelper();// dir, origin, length, hex );
+const arrowHelper = new THREE.ArrowHelper(); // dir, origin, length, hex );
 
 const createMaterial = (color) =>
   new THREE.ShaderMaterial({
     fragmentShader,
     vertexShader,
-    uniforms: { faceColor: { value: color } },
+    uniforms: {
+      faceColor: {
+        value: color
+      }
+    },
   });
 
 const materials = Object.entries({
@@ -56,14 +161,17 @@ const materials = Object.entries({
   blue: new THREE.Vector4(0.011, 0.352, 0.65),
   green: new THREE.Vector4(0.054, 0.486, 0.117),
   gray: new THREE.Vector4(0.301, 0.243, 0.243)
-}).reduce((acc, [key, val]) => ({ ...acc, [key]: createMaterial(val) }), {});
+}).reduce((acc, [key, val]) => ({
+  ...acc,
+  [key]: createMaterial(val)
+}), {});
 
 const Place = () => {
   let widthId = window.innerWidth;
   let heightId = window.innerHeight;
   let marg = 10;
-  if (widthId / 4 < heightId / 9) [widthId, heightId] = [widthId / 4, widthId / 4];
-  else[widthId, heightId] = [heightId / 9, heightId / 9];
+  if (widthId / 4 < heightId / 9)[widthId, heightId] = [widthId / 4, widthId / 4];
+  else [widthId, heightId] = [heightId / 9, heightId / 9];
 
   const Place1 = (id, t, l, w, h) => {
     document.querySelector("#" + id).style.cssText =
@@ -83,9 +191,12 @@ const Place = () => {
 
 const fCanvasRenderCamera = (elem) => {
   const nCanva = canvas.push(document.getElementById(elem.name)) - 1;
-  const nRenderer = renderers.push(new THREE.WebGLRenderer({ antialias: true })) - 1;
+  const nRenderer = renderers.push(new THREE.WebGLRenderer({
+    antialias: true
+  })) - 1;
   canvas[nCanva].appendChild(renderers[nRenderer].domElement);
-  const innerHeight = canvas[nCanva].clientHeight, innerWidth = canvas[nCanva].clientWidth;
+  const innerHeight = canvas[nCanva].clientHeight,
+    innerWidth = canvas[nCanva].clientWidth;
   renderers[nRenderer].setClearColor("#000");
   renderers[nRenderer].setSize(innerWidth, innerHeight);
   renderers[nRenderer].setPixelRatio(window.devicePixelRatio);
@@ -101,7 +212,8 @@ const fCanvasRenderCamera = (elem) => {
 const onWindowResize = () => {
   Place();
   for (let i = 0; i < canvas.length; i++) {
-    const innerHeight = canvas[i].clientHeight, innerWidth = canvas[i].clientWidth;
+    const innerHeight = canvas[i].clientHeight,
+      innerWidth = canvas[i].clientWidth;
     cameras[i].aspect = innerWidth / innerHeight;
     cameras[i].updateProjectionMatrix();
     renderers[i].setSize(innerWidth, innerHeight);
@@ -122,6 +234,68 @@ function init() {
   canvas[6].addEventListener("mousedown", onMouseDown);
   canvas[6].addEventListener("mouseup", onMouseUp);
   window.addEventListener("resize", onWindowResize, false);
+
+  document.addEventListener('keydown', (event) => {
+    const keyName = event.key;
+    console.log("key " + keyName + " pressed")
+    switch (keyName) {
+      case 'u':
+        rollObject.roll({
+            axis: "y",
+            value: 1,
+            face: true
+          },
+          -1)
+        break;
+
+      case 'd':
+        rollObject.roll({
+            axis: "y",
+            value: -1,
+            face: true
+          },
+          1)
+        break;
+
+      case 'r':
+        rollObject.roll({
+            axis: "x",
+            value: 1,
+            face: true
+          },
+          -1)
+        break;
+      case 'l':
+        rollObject.roll({
+            axis: "x",
+            value: -1,
+            face: true
+          },
+          1)
+        break;
+
+      case 'f':
+        rollObject.roll({
+            axis: "z",
+            value: 1,
+            face: true
+          },
+          -1)
+        break;
+
+      case 'b':
+        rollObject.roll({
+            axis: "z",
+            value: -1,
+            face: true
+          },
+          1)
+        break;
+
+      default:
+        break;
+    }
+  });
 
   createObjects();
 }
@@ -187,7 +361,11 @@ function createObjects() {
   for (let x = -1; x < 2; x++)
     for (let y = -1; y < 2; y++)
       for (let z = -1; z < 2; z++)
-        createCube({ x, y, z });
+        createCube({
+          x,
+          y,
+          z
+        });
 
   group = new THREE.Group();
   scene.add(group);
@@ -207,12 +385,11 @@ function render() {
     if (intersectsPrev != null) {
       intersectsPrev.object.material[intersectsPrev.face.materialIndex].uniforms.faceColor.value = materials[config[intersectsPrev.face.materialIndex].color].uniforms.faceColor.value;
     }
-  }
-  else {
+  } else {
     arrowHelper.position.copy(intersects[0].point);
     normalMatrix.getNormalMatrix(intersects[0].object.matrixWorld);
     // normalMatrix = new THREE.Matrix3().getNormalMatrix( intersects[ 0 ].object.matrixWorld );
-    normalIntersect = intersects[0].face.normal.clone().applyMatrix3(normalMatrix);//.normalize();
+    normalIntersect = intersects[0].face.normal.clone().applyMatrix3(normalMatrix); //.normalize();
     arrowHelper.setDirection(normalIntersect);
     pointIntersect = intersects[0].object.position;
     if (intersects[0].object.material[intersects[0].face.materialIndex].uniforms.faceColor.value != materials['gray'].uniforms.faceColor.value) {
@@ -220,7 +397,7 @@ function render() {
       if (intersectsPrev != null)
         intersectsPrev.object.material[intersectsPrev.face.materialIndex].uniforms.faceColor.value = materials[config[intersectsPrev.face.materialIndex].color].uniforms.faceColor.value;
 
-      intersects[0].object.material[intersects[0].face.materialIndex].uniforms.faceColor.value = materials['gray'].uniforms.faceColor.value;//{x:0, y:0, z:0, w:1};
+      intersects[0].object.material[intersects[0].face.materialIndex].uniforms.faceColor.value = materials['gray'].uniforms.faceColor.value; //{x:0, y:0, z:0, w:1};
       intersectsPrev = intersects[0];
     }
   }
@@ -231,12 +408,12 @@ const onPointerMove = (event) => {
   // calculate pointer position in normalized device coordinates
   // (-1 to +1) for both components
   pointer.x = (event.offsetX / event.target.clientWidth) * 2 - 1;
-  pointer.y = - (event.offsetY / event.target.clientHeight) * 2 + 1;
+  pointer.y = -(event.offsetY / event.target.clientHeight) * 2 + 1;
 }
 
 const onMouseDown = (event) => {
   pointerClick.x = (event.offsetX / event.target.clientWidth) * 2 - 1;
-  pointerClick.y = - (event.offsetY / event.target.clientHeight) * 2 + 1;
+  pointerClick.y = -(event.offsetY / event.target.clientHeight) * 2 + 1;
   if (arrowHelper.visible) {
     pPointIntersect = pointIntersect;
     pNormalIntersect = normalIntersect;
@@ -256,26 +433,21 @@ function onMouseUp(event) {
   const s = Math.sin(Math.PI / 4);
   const c = Math.cos(Math.PI / 4);
   if (pNormalIntersect.y > 0.9) {
-    rollObject.roll(
-      {
+    rollObject.roll({
         axis: (pointerDelta.x * pointerDelta.y > 0) ? "x" : "z",
         value: (pointerDelta.x * pointerDelta.y > 0) ? sign(pPointIntersect.x) : sign(pPointIntersect.z),
         face: Math.abs(pPointIntersect.x) > 0.1 || Math.abs(pPointIntersect.z) > 0.1
       },
       (pointerDelta.x > 0) ? 1 : -1);
-  }
-  else if (pNormalIntersect.x > 0.9) {
-    rollObject.roll(
-      {
+  } else if (pNormalIntersect.x > 0.9) {
+    rollObject.roll({
         axis: (Math.abs(c * pointerDelta.x + s * pointerDelta.y) < Math.abs(pointerDelta.y)) ? "z" : "y",
         value: (Math.abs(c * pointerDelta.x + s * pointerDelta.y) < Math.abs(pointerDelta.y)) ? sign(pPointIntersect.z) : sign(pPointIntersect.y),
         face: Math.abs(pPointIntersect.y) > 0.1 || Math.abs(pPointIntersect.z) > 0.1
       },
       (c * pointerDelta.x + s * pointerDelta.y < 0) ? 1 : -1);
-  }
-  else /*if (pNormalIntersect.z > 0.9)*/ {
-    rollObject.roll(
-      {
+  } else /*if (pNormalIntersect.z > 0.9)*/ {
+    rollObject.roll({
         axis: (Math.abs(-c * pointerDelta.x + s * pointerDelta.y) < Math.abs(pointerDelta.y)) ? "x" : "y",
         value: (Math.abs(-c * pointerDelta.x + s * pointerDelta.y) < Math.abs(pointerDelta.y)) ? sign(pPointIntersect.x) : sign(pPointIntersect.y),
         face: Math.abs(pPointIntersect.x) > 0.1 || Math.abs(pPointIntersect.y) > 0.1

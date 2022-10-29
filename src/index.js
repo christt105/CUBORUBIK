@@ -136,10 +136,6 @@ const config = [{
 
 let cubes = [];
 
-const dir = new THREE.Vector3(1, 2, 0).normalize();
-const origin = new THREE.Vector3(0, 0, 0);
-const length = 1;
-const hex = 0xffffff;
 const arrowHelper = new THREE.ArrowHelper(); // dir, origin, length, hex );
 
 const createMaterial = (color) =>
@@ -235,17 +231,25 @@ function init() {
   canvas[6].addEventListener("mouseup", onMouseUp);
   window.addEventListener("resize", onWindowResize, false);
 
+  let button = document.createElement("button");
+  button.innerHTML = "Reset";
+  button.className = "reset-button";
+  button.onclick = function () {
+    reset();
+  }
+  document.body.appendChild(button);
+
   document.addEventListener('keydown', (event) => {
     const keyName = event.key;
     console.log("key " + keyName + " pressed")
-    switch (keyName) {
+    switch (keyName.toLowerCase()) {
       case 'u':
         rollObject.roll({
             axis: "y",
             value: 1,
             face: true
           },
-          -1)
+          keyName === keyName.toLowerCase() ? -1 : 1)
         break;
 
       case 'd':
@@ -254,7 +258,7 @@ function init() {
             value: -1,
             face: true
           },
-          1)
+          keyName === keyName.toLowerCase() ? 1 : -1)
         break;
 
       case 'r':
@@ -263,7 +267,7 @@ function init() {
             value: 1,
             face: true
           },
-          -1)
+          keyName === keyName.toLowerCase() ? -1 : 1)
         break;
       case 'l':
         rollObject.roll({
@@ -271,7 +275,7 @@ function init() {
             value: -1,
             face: true
           },
-          1)
+          keyName === keyName.toLowerCase() ? 1 : -1)
         break;
 
       case 'f':
@@ -280,7 +284,7 @@ function init() {
             value: 1,
             face: true
           },
-          -1)
+          keyName === keyName.toLowerCase() ? -1 : 1);
         break;
 
       case 'b':
@@ -289,7 +293,41 @@ function init() {
             value: -1,
             face: true
           },
-          1)
+          keyName === keyName.toLowerCase() ? 1 : -1);
+        break;
+
+      case 'arrowright':
+        rollObject.roll({
+            axis: "y",
+            value: -1,
+            face: false
+          },
+          1);
+        break;
+      case 'arrowleft':
+        rollObject.roll({
+            axis: "y",
+            value: -1,
+            face: false
+          },
+          -1);
+        break;
+
+      case 'arrowup':
+        rollObject.roll({
+            axis: "x",
+            value: -1,
+            face: false
+          },
+          -1);
+        break;
+      case 'arrowdown':
+        rollObject.roll({
+            axis: "x",
+            value: -1,
+            face: false
+          },
+          1);
         break;
 
       default:
@@ -315,10 +353,11 @@ class Roll {
         group.add(item);
       }
     });
+    const eases = ["back", "power2", "circ"];
     gsap.to(group.rotation, {
       [this.face.axis]: this.direction * Math.PI / 2,
       duration: 0.5,
-      ease: "bounce",
+      ease: eases[Math.floor(Math.random() * eases.length)],
       onStart: () => this.active = true,
       onComplete: () => {
         this.clearGroup();
@@ -346,30 +385,50 @@ function createObjects() {
     let mat = [];
     for (let i = 0; i < 6; i++) {
       let cnd = config[i];
-      // if (position[cnd[0]] == cnd[1]) {
       mat.push(materials[cnd.color].clone());
-      // } else {
-      // mat.push(materials.gray);
-      // }
     }
     const cube = new THREE.Mesh(geometry, mat);
     cube.position.set(position.x, position.y, position.z);
+    let cubeScale = 1.3;
+    cube.scale.set(cubeScale, cubeScale, cubeScale);
     cubes.push(cube);
     scene.add(cube);
   };
 
-  for (let x = -1; x < 2; x++)
-    for (let y = -1; y < 2; y++)
-      for (let z = -1; z < 2; z++)
+  for (let x = -1; x < 2; x++) {
+    for (let y = -1; y < 2; y++) {
+      for (let z = -1; z < 2; z++) {
         createCube({
           x,
           y,
           z
         });
+        console.log({
+          x,
+          y,
+          z
+        });
+      }
+    }
+  }
 
   group = new THREE.Group();
   scene.add(group);
   rollObject = new Roll();
+}
+
+function reset() {
+  let index = 0;
+  for (let x = -1; x < 2; x++) {
+    for (let y = -1; y < 2; y++) {
+      for (let z = -1; z < 2; z++) {
+        let cube = cubes[index++];
+        cube.position.set(x, y, z);
+        cube.rotation.set(0,0,0)
+        
+      }
+    }
+  }
 }
 
 function render() {

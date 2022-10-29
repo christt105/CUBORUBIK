@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  background-color: rgb(50, 50, 50);
 }
 
 canvas {
@@ -11,7 +12,7 @@ canvas {
 }
 
 body {
-  background-color: #2196F3;
+  background-color: #0000;
 }
 #grid-container1  {
   display: grid;
@@ -29,7 +30,7 @@ body {
 
 
 #all {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #0000;
   border: none;
   text-align: center;
   font-size: 30px;
@@ -38,42 +39,42 @@ body {
 }
 
 #back {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #0000;
   border: none;
   text-align: center;
   font-size: 30px;
   position: absolute;
 }
 #left {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgb(50, 50, 50);
   border: none;
   text-align: center;
   font-size: 30px;
   position: absolute;
 }
 #bottom {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgb(50, 50, 50);
   border: none;
   text-align: center;
   font-size: 30px;
   position: absolute;
 }
 #right {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #0000;
   border: none;
   text-align: center;
   font-size: 30px;
   position: absolute;
 }
 #top {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #0000;
   border: none;
   text-align: center;
   font-size: 30px;
   position: absolute;
 }
 #front {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #0000;
   border: none;
   text-align: center;
   font-size: 30px;
@@ -81,10 +82,23 @@ body {
 }
 
 #orbit {
-  background-color: rgba(255, 255, 255, 1);
+  background-color: #0000;
   border: none;
   text-align: center;
   font-size: 30px;
   position: absolute;
   z-index: 1;
+}
+
+.reset-button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  position: absolute;
+  right: 0%;
 }

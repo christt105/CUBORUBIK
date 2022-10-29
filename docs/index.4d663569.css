@@ -1,0 +1,113 @@
+* {
+  background-color: #323232;
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  width: 50%;
+  height: 50%;
+  z-index: 1;
+}
+
+body {
+  background-color: #0000;
+}
+
+#grid-container1 {
+  background-color: #2196f3;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  padding: 0;
+  display: grid;
+}
+
+#grid-container2 {
+  height: 100%;
+  background-color: #2196f3;
+  grid-template-columns: 1fr;
+  padding: 0;
+  display: grid;
+}
+
+#all {
+  text-align: center;
+  z-index: -1;
+  background-color: #0000;
+  border: none;
+  font-size: 30px;
+  position: absolute;
+}
+
+#back {
+  text-align: center;
+  background-color: #0000;
+  border: none;
+  font-size: 30px;
+  position: absolute;
+}
+
+#left, #bottom {
+  text-align: center;
+  background-color: #323232;
+  border: none;
+  font-size: 30px;
+  position: absolute;
+}
+
+#right, #top, #front {
+  text-align: center;
+  background-color: #0000;
+  border: none;
+  font-size: 30px;
+  position: absolute;
+}
+
+#orbit {
+  text-align: center;
+  z-index: 1;
+  background-color: #0000;
+  border: none;
+  font-size: 30px;
+  position: absolute;
+}
+
+.reset-button {
+  color: #fff;
+  text-align: center;
+  background-color: #4caf50;
+  border: none;
+  padding: 15px 32px;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-block;
+  position: absolute;
+  right: 0%;
+}
+
+.move-button {
+  color: #fff;
+  text-align: center;
+  background-color: #4caf50;
+  border: none;
+  padding: 15px 32px;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-block;
+  position: absolute;
+  left: 60%;
+}
+
+.input-alg {
+  color: #000;
+  text-align: center;
+  background-color: #fff;
+  border: none;
+  padding: 15px 32px;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  left: 40%;
+}
+
+/*# sourceMappingURL=index.4d663569.css.map */

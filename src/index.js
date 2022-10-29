@@ -239,7 +239,19 @@ function init() {
   }
   document.body.appendChild(button);
 
+  let input = document.getElementById("input-alg");
+  input.onfocus = function (event) {
+    focusMain = false;
+  }
+
+  let moveButton = document.getElementById("move-button");
+  moveButton.onclick = function () {
+    MoveSequence(input.value);
+  }
+
   document.addEventListener('keydown', (event) => {
+    if (!focusMain)
+      return;
     const keyName = event.key;
     console.log("key " + keyName + " pressed")
     switch (keyName.toLowerCase()) {
@@ -338,12 +350,85 @@ function init() {
   createObjects();
 }
 
+function MoveSequence(sequence) {
+  console.log(sequence)
+  if (sequence.length > 1) {
+    rollObject.roll(GetRollByFace(sequence[0]), GetDirectionByFace(sequence[0]), () => MoveSequence(sequence.substring(1)));
+  } else {
+    rollObject.roll(GetRollByFace(sequence[0]), GetDirectionByFace(sequence[0]));
+  }
+}
+
+function GetRollByFace(keyName) {
+  switch (keyName.toLowerCase()) {
+    case 'u':
+      return {
+        axis: "y",
+          value: 1,
+          face: true
+      };
+
+    case 'd':
+      return {
+        axis: "y",
+          value: -1,
+          face: true
+      };
+
+    case 'r':
+      return {
+        axis: "x",
+          value: 1,
+          face: true
+      };
+    case 'l':
+      return {
+        axis: "x",
+          value: -1,
+          face: true
+      };
+
+    case 'f':
+      return {
+        axis: "z",
+          value: 1,
+          face: true
+      };
+
+    case 'b':
+      return {
+        axis: "z",
+          value: -1,
+          face: true
+      }
+  }
+}
+
+function GetDirectionByFace(keyName) {
+  switch (keyName.toLowerCase()) {
+    case 'u':
+      return keyName === keyName.toLowerCase() ? -1 : 1;
+    case 'd':
+      return keyName === keyName.toLowerCase() ? 1 : -1;
+    case 'r':
+      return keyName === keyName.toLowerCase() ? -1 : 1;
+    case 'l':
+      return keyName === keyName.toLowerCase() ? 1 : -1;
+    case 'f':
+      return keyName === keyName.toLowerCase() ? -1 : 1;
+    case 'b':
+      return keyName === keyName.toLowerCase() ? 1 : -1;
+  }
+}
+
+var focusMain = true;
+
 class Roll {
   constructor() {
     this.active = false;
   }
 
-  roll(face, direction) {
+  roll(face, direction, onCompleted = null) {
     if (this.active) return;
     this.face = face;
     this.direction = direction;
@@ -362,6 +447,9 @@ class Roll {
       onComplete: () => {
         this.clearGroup();
         this.active = false;
+        if (onCompleted) {
+          onCompleted();
+        }
       },
     })
   }
@@ -403,11 +491,6 @@ function createObjects() {
           y,
           z
         });
-        console.log({
-          x,
-          y,
-          z
-        });
       }
     }
   }
@@ -424,8 +507,8 @@ function reset() {
       for (let z = -1; z < 2; z++) {
         let cube = cubes[index++];
         cube.position.set(x, y, z);
-        cube.rotation.set(0,0,0)
-        
+        cube.rotation.set(0, 0, 0)
+
       }
     }
   }
@@ -471,6 +554,7 @@ const onPointerMove = (event) => {
 }
 
 const onMouseDown = (event) => {
+  focusMain = true;
   pointerClick.x = (event.offsetX / event.target.clientWidth) * 2 - 1;
   pointerClick.y = -(event.offsetY / event.target.clientHeight) * 2 + 1;
   if (arrowHelper.visible) {

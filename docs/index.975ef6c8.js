@@ -732,6 +732,8 @@ const onWindowResize = ()=>{
         renderers[i].setSize(innerWidth, innerHeight);
     }
 };
+var counterText;
+var moves = 0;
 function init() {
     Place();
     scene = new THREE.Scene();
@@ -751,13 +753,358 @@ function init() {
         reset();
     };
     document.body.appendChild(button);
-    let input = document.getElementById("input-alg");
+    var input = document.getElementById("input-alg");
     input.onfocus = function(event) {
         focusMain = false;
     };
+    input.addEventListener("keypress", function(event) {
+        // If the user presses the "Enter" key on the keyboard
+        if (event.key === "Enter") {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            moveButton.click();
+        }
+    });
     let moveButton = document.getElementById("move-button");
     moveButton.onclick = function() {
         MoveSequence(input.value);
+    };
+    let shuffleButton = document.getElementById("shuffle-button");
+    shuffleButton.onclick = function() {
+        setCubes([
+            {
+                "position": {
+                    "x": 1,
+                    "y": 1,
+                    "z": -1
+                },
+                "rotation": {
+                    "x": 1.570795266362471,
+                    "y": -0.0000003267926562133874,
+                    "z": 1.570795019614536
+                }
+            },
+            {
+                "position": {
+                    "x": -1,
+                    "y": -1,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": -0.0000026143591738156973,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "position": {
+                    "x": 1,
+                    "y": -1,
+                    "z": -1
+                },
+                "rotation": {
+                    "x": -3.1415916732121514,
+                    "y": 0.0000019606781131347717,
+                    "z": -3.1415890588463564
+                }
+            },
+            {
+                "position": {
+                    "x": 0,
+                    "y": -1,
+                    "z": 1
+                },
+                "rotation": {
+                    "x": -3.1415926535870162,
+                    "y": 0.000001960769380315402,
+                    "z": -1.5707986143591737
+                }
+            },
+            {
+                "position": {
+                    "x": -1,
+                    "y": 0,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": -0.0000026143591738156973,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "position": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 1.570794039230619,
+                    "y": -1.570793947783561,
+                    "z": 0
+                }
+            },
+            {
+                "position": {
+                    "x": -1,
+                    "y": -1,
+                    "z": 1
+                },
+                "rotation": {
+                    "x": 3.1415923267921197,
+                    "y": -0.0000019607667386591824,
+                    "z": -0.0000016339750179596481
+                }
+            },
+            {
+                "position": {
+                    "x": 1,
+                    "y": 0,
+                    "z": 1
+                },
+                "rotation": {
+                    "x": -1.5707956732051036,
+                    "y": -0.0000019931285322191124,
+                    "z": -3.141592653589686
+                }
+            },
+            {
+                "position": {
+                    "x": -1,
+                    "y": 1,
+                    "z": 1
+                },
+                "rotation": {
+                    "x": -0.000001960769593950884,
+                    "y": 6.535868027297799e-7,
+                    "z": 0.000002614360455679131
+                }
+            },
+            {
+                "position": {
+                    "x": -1,
+                    "y": 0,
+                    "z": -1
+                },
+                "rotation": {
+                    "x": -0.000000654281605338747,
+                    "y": 8.559418002288205e-13,
+                    "z": -1.5707986143591737
+                }
+            },
+            {
+                "position": {
+                    "x": 0,
+                    "y": -1,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 1.570795999647377,
+                    "z": 0
+                }
+            },
+            {
+                "position": {
+                    "x": 0,
+                    "y": -1,
+                    "z": -1
+                },
+                "rotation": {
+                    "x": 3.1415926535895795,
+                    "y": 6.535897935203424e-7,
+                    "z": -3.1415893856408257
+                }
+            },
+            {
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -1
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 3.1415919999999997
+                }
+            },
+            {
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "position": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 1
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -3.141589385640826
+                }
+            },
+            {
+                "position": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 1.570795999647377,
+                    "y": 1.4956924587750109e-12,
+                    "z": -1.5707992679489677
+                }
+            },
+            {
+                "position": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": -3.141592653589793,
+                    "y": -0.000000653262981487058,
+                    "z": -3.141592653589793
+                }
+            },
+            {
+                "position": {
+                    "x": -1,
+                    "y": 0,
+                    "z": 1
+                },
+                "rotation": {
+                    "x": 1.5707953464102062,
+                    "y": -1.5707960003268118,
+                    "z": 0
+                }
+            },
+            {
+                "position": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 1
+                },
+                "rotation": {
+                    "x": -3.141591346410421,
+                    "y": -0.0000006535910752442228,
+                    "z": -0.000002614358747268499
+                }
+            },
+            {
+                "position": {
+                    "x": 0,
+                    "y": 1,
+                    "z": -1
+                },
+                "rotation": {
+                    "x": 1.5707963267947898,
+                    "y": 1.5707950836414668,
+                    "z": 0
+                }
+            },
+            {
+                "position": {
+                    "x": -1,
+                    "y": 1,
+                    "z": -1
+                },
+                "rotation": {
+                    "x": 3.1415916732054234,
+                    "y": -1.5707946401308879,
+                    "z": 0
+                }
+            },
+            {
+                "position": {
+                    "x": 1,
+                    "y": -1,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 1.5707992679489666,
+                    "y": -1.5707951486604284,
+                    "z": 0
+                }
+            },
+            {
+                "position": {
+                    "x": 1,
+                    "y": 0,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 0.0000013071795870180332,
+                    "y": 0,
+                    "z": 0
+                }
+            },
+            {
+                "position": {
+                    "x": 1,
+                    "y": 0,
+                    "z": -1
+                },
+                "rotation": {
+                    "x": -3.1415916732044624,
+                    "y": -0.000000980197325093026,
+                    "z": 6.535897936202655e-7
+                }
+            },
+            {
+                "position": {
+                    "x": -1,
+                    "y": -1,
+                    "z": -1
+                },
+                "rotation": {
+                    "x": -0.0000003267943481830674,
+                    "y": 3.3585522340135865e-7,
+                    "z": 3.1415910196154164
+                }
+            },
+            {
+                "position": {
+                    "x": 0,
+                    "y": 1,
+                    "z": 1
+                },
+                "rotation": {
+                    "x": 2.7755575615628914e-16,
+                    "y": -1.5707949425901084,
+                    "z": 0
+                }
+            },
+            {
+                "position": {
+                    "x": 1,
+                    "y": -1,
+                    "z": 1
+                },
+                "rotation": {
+                    "x": 1.5707976339737986,
+                    "y": 7.702354863292532e-8,
+                    "z": 0.000001960769379972365
+                }
+            }
+        ]);
+    };
+    counterText = document.getElementById("counter-text");
+    counterText.innerText = moves;
+    let counterButton = document.getElementById("counter-button");
+    counterButton.onclick = function() {
+        moves = 0;
+        refreshCounter();
     };
     document.addEventListener("keydown", (event)=>{
         if (!focusMain) return;
@@ -765,46 +1112,34 @@ function init() {
         console.log("key " + keyName + " pressed");
         switch(keyName.toLowerCase()){
             case "u":
-                rollObject.roll({
-                    axis: "y",
-                    value: 1,
-                    face: true
-                }, keyName === keyName.toLowerCase() ? -1 : 1);
-                break;
             case "d":
-                rollObject.roll({
-                    axis: "y",
-                    value: -1,
-                    face: true
-                }, keyName === keyName.toLowerCase() ? 1 : -1);
-                break;
             case "r":
-                rollObject.roll({
-                    axis: "x",
-                    value: 1,
-                    face: true
-                }, keyName === keyName.toLowerCase() ? -1 : 1);
-                break;
             case "l":
-                rollObject.roll({
-                    axis: "x",
-                    value: -1,
-                    face: true
-                }, keyName === keyName.toLowerCase() ? 1 : -1);
-                break;
             case "f":
-                rollObject.roll({
-                    axis: "z",
-                    value: 1,
-                    face: true
-                }, keyName === keyName.toLowerCase() ? -1 : 1);
-                break;
             case "b":
-                rollObject.roll({
-                    axis: "z",
-                    value: -1,
-                    face: true
-                }, keyName === keyName.toLowerCase() ? 1 : -1);
+                rollObject.roll(GetRollByFace(keyName), GetDirectionByFace(keyName));
+                break;
+            case "enter":
+                if (input.value.length > 0) MoveSequence(input.value);
+                break;
+            case "backspace":
+                let positionsAndRotations = [];
+                for(let i = 0; i < cubes.length; i++){
+                    const cube = cubes[i];
+                    positionsAndRotations.push({
+                        position: {
+                            x: cube.position.x,
+                            y: cube.position.y,
+                            z: cube.position.z
+                        },
+                        rotation: {
+                            x: cube.rotation.x,
+                            y: cube.rotation.y,
+                            z: cube.rotation.z
+                        }
+                    });
+                }
+                console.log(positionsAndRotations);
                 break;
             case "arrowright":
                 rollObject.roll({
@@ -834,11 +1169,44 @@ function init() {
                     face: false
                 }, 1);
                 break;
+            case "1":
+                input.value = "BrbbddB";
+                break;
+            case "2":
+                input.value = "ruuRluulluulBUb";
+                break;
+            case "3":
+                input.value = "uuURurubUB";
+                break;
+            case "4":
+                input.value = "UUFufurUR";
+                break;
+            case "5":
+                input.value = "ufUFULul";
+                break;
+            case "6":
+                input.value = "UulULUBub";
+                break;
+            case "7":
+                input.value = "lfuFUL";
+                break;
+            case "8":
+                input.value = "uuruuRUrURU";
+                break;
+            case "9":
+                input.value = "ulURuLUr";
+                break;
+            case "0":
+                input.value = "RDrdRDrd";
+                break;
             default:
                 break;
         }
     });
     createObjects();
+}
+function refreshCounter() {
+    counterText.innerText = moves;
 }
 function MoveSequence(sequence) {
     console.log(sequence);
@@ -910,6 +1278,8 @@ class Roll {
         if (this.active) return;
         this.face = face;
         this.direction = direction;
+        moves++;
+        refreshCounter();
         cubes.forEach((item)=>{
             if (item.position[face.axis] == face.value || !face.face) {
                 scene.remove(item);
@@ -979,6 +1349,15 @@ function reset() {
             cube.position.set(x, y, z);
             cube.rotation.set(0, 0, 0);
         }
+    }
+}
+function setCubes(cubesArray) {
+    for(let i = 0; i < cubes.length; i++){
+        const cube = cubes[i];
+        const position = cubesArray[i].position;
+        const rotation = cubesArray[i].rotation;
+        cube.position.set(position.x, position.y, position.z);
+        cube.rotation.set(rotation.x, rotation.y, rotation.z);
     }
 }
 function render() {

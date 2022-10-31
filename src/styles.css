@@ -116,6 +116,49 @@ body {
   left: 60%;
 }
 
+.shuffle-button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  position: absolute;
+  left: 75%;
+}
+
+.counter-button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  position: absolute;
+  right: 0%;
+  top: 15%;
+}
+
+.counter-text {
+  background-color: #4f8351; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 32px;
+  position: absolute;
+  right: 0%;
+  top: 20%;
+}
+
+
+
 .input-alg {
   position: relative;
   background-color: white; /* Green */

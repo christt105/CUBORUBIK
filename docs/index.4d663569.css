@@ -97,6 +97,47 @@ body {
   left: 60%;
 }
 
+.shuffle-button {
+  color: #fff;
+  text-align: center;
+  background-color: #4caf50;
+  border: none;
+  padding: 15px 32px;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-block;
+  position: absolute;
+  left: 75%;
+}
+
+.counter-button {
+  color: #fff;
+  text-align: center;
+  background-color: #4caf50;
+  border: none;
+  padding: 15px 32px;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-block;
+  position: absolute;
+  top: 15%;
+  right: 0%;
+}
+
+.counter-text {
+  color: #fff;
+  text-align: center;
+  background-color: #4f8351;
+  border: none;
+  padding: 15px 32px;
+  font-size: 32px;
+  text-decoration: none;
+  display: inline-block;
+  position: absolute;
+  top: 20%;
+  right: 0%;
+}
+
 .input-alg {
   color: #000;
   text-align: center;
